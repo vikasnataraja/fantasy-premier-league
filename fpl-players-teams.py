@@ -154,7 +154,7 @@ def plot_top_bonus(df, filename, offsets = [2.75, 3.1, 3.85]):
     ax.add_collection(collection)
     collection.set_color('indigo')
     ax.text(-0.25, max(yticks)-1.5, 'Fantasy Premier League 2020/21', weight="bold", color="white", fontsize=52)
-    ax.text(-0.25, max(yticks)-3, '{$\it{{Most \ Bonus \ Points}}$}', color="white", weight="bold", fontsize=46)
+    ax.text(-0.25, max(yticks)-3, '$\it{{Most \ Bonus \ Points}}$', color="white", weight="bold", fontsize=46)
     ax.text(8.4,min(yticks)+0.6,'$\it{Author: Vikas \ Nataraja}$', fontsize=16)
     ax.text(8.4,min(yticks)+0.2,'$\it{Data \ Source: Official \ FPL }$', fontsize=16)
     ax.text(-0.4,min(yticks)+0.2,'$\it{*min \ 50 \ total \ pts}$', fontsize=16)
@@ -294,7 +294,7 @@ def plot_popularity_performance(df, top_n):
     ax.text(6.4,min(yticks)+1,'$\it{Data \ Source: Official \ FPL }$', fontsize=16)
     ax.text(3.25,min(yticks)+1,'$\it{*min \ 50 \ total \ pts; \ average \ ownership \ and \ pts \ over \ entire \ season}$', fontsize=16)
     ax.set_facecolor('ghostwhite')
-    fig.savefig('popularity_vs_performace.png', dpi=100, bbox_inches = 'tight', pad_inches = 0)
+    fig.savefig('popularity_vs_performance.png', dpi=100, bbox_inches = 'tight', pad_inches = 0)
     plt.show();
 
 
