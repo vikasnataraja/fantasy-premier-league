@@ -21,7 +21,7 @@ plt.rcParams.update({
 
 def get_position_player_data(json_data, drop_thresh=50):
     player_df = pd.DataFrame(json_data['elements'])
-    selected_cols = ['id','first_name', 'second_name','web_name', 'element_type',
+    selected_cols = ['id','first_name', 'second_name','web_name', 'element_type','team',
                      'now_cost','cost_change_start','total_points','points_per_game',
                      'selected_by_percent','value_season','minutes','photo','goals_scored',
                      'assists', 'clean_sheets', 'goals_conceded', 'own_goals',
@@ -34,8 +34,17 @@ def get_position_player_data(json_data, drop_thresh=50):
     player_df['cost_change_start'] = player_df['cost_change_start']/10.
     player_df['avg_cost'] = (player_df['now_cost']*2 + player_df['cost_change_start'])/2
     pos_map = {1:"GK", 2:"DEF", 3:"MID", 4:"FWD"}
+    
+    team_ids = list(np.arange(1,21,1))
+    team_names = ['Arsenal','Aston Villa','Brighton','Burnley','Chelsea','Crystal Palace',
+                  'Everton','Fulham','Leeds United','Leicester City','Liverpool','Manchester City',
+                  'Manchester Utd','Newcastle Utd','Sheffield Utd','Southampton','Tottenham',
+                  'West Brom','West Ham','Wolves']
+    team_map = dict(zip(team_ids, team_names))
     player_df['pos'] = player_df['element_type'].map(pos_map)
-
+    player_df['team_name'] = player_df['team'].map(team_map)
+    player_df = player_df.drop(['team'], axis=1)
+    
     gks = player_df[player_df['pos']=="GK"].reset_index(drop=True)
     defs = player_df[player_df['pos']=="DEF"].reset_index(drop=True)
     mids = player_df[player_df['pos']=="MID"].reset_index(drop=True)
