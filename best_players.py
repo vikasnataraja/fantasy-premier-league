@@ -37,7 +37,7 @@ def get_position_player_data(json_data, drop_thresh=50):
     
     team_ids = list(np.arange(1,21,1))
     team_names = ['Arsenal','Aston Villa','Brighton','Burnley','Chelsea','Crystal Palace',
-                  'Everton','Fulham','Leeds United','Leicester City','Liverpool','Manchester City',
+                  'Everton','Fulham','Leicester City','Leeds United','Liverpool','Manchester City',
                   'Manchester Utd','Newcastle Utd','Sheffield Utd','Southampton','Tottenham',
                   'West Brom','West Ham','Wolves']
     team_map = dict(zip(team_ids, team_names))
