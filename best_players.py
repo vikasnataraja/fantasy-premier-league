@@ -19,8 +19,11 @@ plt.rcParams.update({
     "font.family": "sans-serif",
     "font.sans-serif": ["Helvetica"]})
 
-def get_position_player_data(json_data, drop_thresh=50):
-    player_df = pd.DataFrame(json_data['elements'])
+def get_position_player_data(data, json, drop_thresh=50):
+    if json:
+        player_df = pd.DataFrame(data['elements'])
+    else:
+        player_df = data
     selected_cols = ['id','first_name', 'second_name','web_name', 'element_type','team',
                      'now_cost','cost_change_start','total_points','points_per_game',
                      'selected_by_percent','value_season','minutes','photo','goals_scored',
@@ -41,8 +44,17 @@ def get_position_player_data(json_data, drop_thresh=50):
                   'Manchester Utd','Newcastle Utd','Sheffield Utd','Southampton','Tottenham',
                   'West Brom','West Ham','Wolves']
     team_map = dict(zip(team_ids, team_names))
+
+    fpl_team_code_map = {'Arsenal': 3, 'Aston Villa': 7, 'Brighton': 36, 'Burnley': 90, 'Chelsea': 8,
+                          'Crystal Palace': 31, 'Everton': 11, 'Fulham': 54, 'Leicester City': 13,
+                          'Leeds United': 2, 'Liverpool': 14, 'Manchester City': 43, 'Manchester Utd': 1,
+                          'Newcastle Utd': 4, 'Sheffield Utd': 49, 'Southampton': 20, 'Tottenham': 6,
+                          'West Brom': 35, 'West Ham': 21, 'Wolves': 39}
+
     player_df['pos'] = player_df['element_type'].map(pos_map)
     player_df['team_name'] = player_df['team'].map(team_map)
+    player_df['team_id'] = player_df['team_name'].map(fpl_team_code_map)
+    player_df['team_id'] = player_df['team_id'].astype('int')
     player_df = player_df.drop(['team'], axis=1)
     
     gks = player_df[player_df['pos']=="GK"].reset_index(drop=True)
@@ -318,7 +330,7 @@ if __name__ == '__main__':
     url = 'https://fantasy.premierleague.com/api/bootstrap-static/'
     r = requests.get(url)
     json_data = r.json()
-    gks, defs, mids, fwds = get_position_player_data(json_data, drop_thresh=args.min_pts)
+    gks, defs, mids, fwds = get_position_player_data(json_data, json=True, drop_thresh=args.min_pts)
     all_players_df = pd.concat([gks, defs, mids, fwds], axis=0).reset_index(drop=True)
     names = ['Alexander-Arnold','Wan-Bissaka','Walker-Peters','Maitland-Niles','Hudson-Odoi',
          'Loftus-Cheek','Saint-Maximin','Ward-Prowse','Calvert-Lewin','Decordova-Reid',
